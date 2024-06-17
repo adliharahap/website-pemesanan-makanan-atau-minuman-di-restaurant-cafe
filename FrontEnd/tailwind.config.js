@@ -5,7 +5,15 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage : theme => ({
+          'login_bg' : "url('/src/assets/website_image/login_background.jpg')",
+      }),
+      fontFamily: {
+        'Playwrite': ['Playwrite', 'sans-serif'],
+        'Poppins': ['poppins', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
