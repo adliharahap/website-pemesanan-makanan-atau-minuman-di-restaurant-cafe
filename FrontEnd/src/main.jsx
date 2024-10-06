@@ -15,6 +15,8 @@ import AdminMenuPages from './Pages/Admin/MenuPages/AdminMenuPages.jsx';
 import AdminAddMenuPages from './Pages/Admin/MenuPages/AdminAddMenuPages.jsx';
 import AdminUserPages from './Pages/Admin/UserPages/AdminUserPages.jsx';
 import AdminListMejaPages from './Pages/Admin/ListMejaPages/AdminListMejaPages.jsx';
+import AdminEditMenuPages from './Pages/Admin/MenuPages/AdminEditMenuPages.jsx';
+import MenuDescriptionPages from './Pages/MenuDescriptionPages.jsx';
 
 const routes = [
   {
@@ -44,6 +46,14 @@ const routes = [
   {
     path : "/Admin/Add-Menu",
     element: <AdminAddMenuPages />
+  },
+  {
+    path : "/Admin/Edit-Menu",
+    element: <AdminEditMenuPages />
+  },
+  {
+    path : "/MenuDescription",
+    element: <MenuDescriptionPages />
   },
   {
     path: "/Admin/Pengguna",

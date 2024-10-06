@@ -5,15 +5,29 @@ const db = require('../database/databases');
 const SECRET_KEY = process.env.SECRET_KEY; // Mengambil secret key dari .env
 
 const getAllUsers = (req, res) => {
-    let sql = 'SELECT * FROM users';
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error saat mengambil data:', err);
-            res.status(500).json({ message: 'Terjadi kesalahan pada server' });
-        } else {
-            res.json(results);
+    try {
+        const userRole = req.user.role;
+
+        if (userRole !== 'admin') {
+            return res.status(403).json({ message: 'Akses ditolak, hanya admin yang dapat Mendapatkan data user' });
         }
-    });
+        
+        let sql = 'SELECT * FROM users';
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error saat mengambil data:', err);
+                res.status(500).json({ message: 'Terjadi kesalahan pada server' });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    data: results,
+                });
+            }
+        });
+    } catch (error) {
+        console.log("error : ", error);
+        
+    }
 };
 
 const postRegistrationUserToDb = (req, res) => {
