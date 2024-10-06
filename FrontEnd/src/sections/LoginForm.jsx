@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../atoms/Input";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoCloseOutline } from "react-icons/io5";
@@ -6,9 +6,11 @@ import { FcGoogle } from "react-icons/fc";
 import { FaRegEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal } from "../redux/slice";
-import { toggleLogin, toggleRegister } from "../redux/slice";
+import { toggleModal } from "../redux/slices/LoginModalSlice";
+import { toggleLogin, toggleRegister } from "../redux/slices/LoginOrRegisterSlice";
 import RegisterForm from "./RegisterForm";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const LoginForm = () => {
@@ -60,14 +62,14 @@ const LoginForm = () => {
                     </div>
                     <div className="w-full">
                         <AnimatePresence >
-                        {login && (
-                            <LoginInput />
-                        )}
+                            {login && (
+                                <LoginInput />
+                            )}
                         </AnimatePresence>
                         <AnimatePresence>
-                        {register && (
-                            <RegisterForm />
-                        )} 
+                            {register && (
+                                <RegisterForm />
+                            )} 
                         </AnimatePresence>
                     </div>
                     <div className="w-full">
@@ -115,6 +117,58 @@ const LoginForm = () => {
 
 const LoginInput = () => {
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false); 
+    const [emailInput, setEmailInput] = useState('');
+    const [passwordInput, setPasswordInput] = useState('');
+    const [loginError, setLoginError] = useState('');
+
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const checkRememberMe  = () => {
+            const getData = JSON.parse(localStorage.getItem('rememberMe'));
+
+            if (getData) {
+                setEmailInput(getData.emailInput);
+                setPasswordInput(getData.passwordInput);
+            }
+        }
+        checkRememberMe();
+    }, []);
+
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault(); // mencegah reload website default
+
+        try {
+            const loginData = {
+                emailInput,
+                passwordInput,
+            };
+
+            const response = await axios.post('http://localhost:3001/api/users/login', loginData);
+
+            if (response) {
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                
+                if (rememberMe) {
+                    localStorage.setItem('rememberMe', JSON.stringify(loginData));
+                }
+
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
+            }else {
+                console.log('Login gagal:', response.data);
+                setLoginError('email atau password salah!');
+            }
+
+        } catch (error) {
+            console.error('Error saat login:', error);
+            setLoginError('email atau password salah!');
+        }
+    };
 
     const showpasswordToggle = () => {
         var showpassword = document.getElementById("password");
@@ -127,15 +181,16 @@ const LoginInput = () => {
         }
     }
     return (
-        <form action="" className="w-full h-full px-6">
+        <form className="w-full h-full px-6" method="POST" onSubmit={handleLoginSubmit}>
+            {loginError && <p  className="text-red-700 font-Poppins text-sm pt-3 text-center">{loginError}</p>}
             <div className="w-full flex flex-col py-3">
                 <label htmlFor="email" className="font-Poppins text-md font-medium">Email</label>
-                <Input type="email" id="email" name="email" placeholder="Masukan email kamu" />
+                <Input type="email" id="email" name="email" inputValue={emailInput} setInputValue={setEmailInput} placeholder="Masukan email kamu" />
                 <br />
             </div>
             <div className="w-full flex flex-col relative">
                 <label htmlFor="password" className="font-Poppins text-md font-medium">Password</label>
-                <Input type="password" id="password" name="password" placeholder="Masukan password kamu" />
+                <Input type="password" id="password" name="password" inputValue={passwordInput} setInputValue={setPasswordInput} placeholder="Masukan password kamu" />
                 {isShowPassword ? (
                     <FaEyeSlash className="absolute right-3 top-8 cursor-pointer" size="20" onClick={showpasswordToggle}/>
                 ) : (
@@ -144,7 +199,7 @@ const LoginInput = () => {
             </div>
             <div className="w-full flex pt-4 items-center justify-between">
                 <div>
-                    <input id="Rememberme" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded m-auto " />
+                    <input id="Rememberme" type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded m-auto " />
                     <label htmlFor="Rememberme" className="ms-2 text-sm text-black text-center font-Poppins font-medium">Remember Me</label>
                 </div>
                 <div>

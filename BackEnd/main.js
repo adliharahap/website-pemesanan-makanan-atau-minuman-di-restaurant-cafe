@@ -1,18 +1,16 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const port = 3001;
-const db = require('./src/databases');
+const userRoutes = require('./src/routes/usersRoutes');
+const port = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(express.json());
 
-app.get('/', (req, res) => {
-    let sql = 'SELECT * FROM users';
-    db.query(sql, (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
-});
+// Middleware verifikasi token hanya untuk rute yang memerlukannya
+app.use('/api/users', userRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
