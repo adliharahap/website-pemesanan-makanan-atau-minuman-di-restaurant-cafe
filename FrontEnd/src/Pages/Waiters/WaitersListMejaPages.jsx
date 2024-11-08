@@ -1,17 +1,17 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import LightLogo from '../../../assets/Logo/light_logo-removebg-preview.png';
+import LightLogo from '../../assets/Logo/light_logo-removebg-preview.png';
 import { MdTableRestaurant } from "react-icons/md";
-import { verifyToken } from '../../../utils/checkUserToken';
+import { verifyToken } from '../../utils/checkUserToken';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import SidebarAdmin from '../../../components/Admin/SidebarAdmin';
 import { AnimatePresence } from 'framer-motion';
-import { setActiveItem } from '../../../redux/slices/sidebarSlice';
-import NavbarAdmin from '../../../components/Admin/NavbarAdmin';
-import ListMejaComponent from '../../../components/Admin/ListMejaComponent';
+import { setActiveItem } from '../../redux/slices/sidebarSlice';
+import NavbarAdmin from '../../components/Admin/NavbarAdmin';
+import ListMejaComponent from '../../components/Admin/ListMejaComponent';
 import axios from 'axios';
+import SidebarWaiter from '../../components/Waiters/SidebarWaiter';
 
-const AdminListMeja = () => {
+const WaitersListMeja = () => {
     const userData = useSelector((state) => state.userData);
     const [allTable,setAllTable] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -30,7 +30,7 @@ const AdminListMeja = () => {
                 const isValid = await verifyToken(token, dispatch);
                 if (isValid) {
                     if (userData && userData.role) {
-                        if (userData.role !== "admin") {
+                        if (userData.role !== "waiter") {
                             navigate('/AccesDecline');
                         }
                     }else {
@@ -38,7 +38,7 @@ const AdminListMeja = () => {
                     }
                 } else {
                     console.log("Token sudah expired");
-                    // navigate('/login');
+                    navigate('/login');
                 }
             } else {
                 navigate('/login');
@@ -88,7 +88,7 @@ const AdminListMeja = () => {
         <div className='min-h-screen min-w-full bg-slate-100 relative'>
             {/* Sidebar */}
             <AnimatePresence>
-                <SidebarAdmin />
+                <SidebarWaiter />
             </AnimatePresence>
 
             {/* navbar */}
@@ -118,9 +118,6 @@ const AdminListMeja = () => {
                         </div>
                         <div className='flex gap-4 justify-end'>
                             <div>
-                                <button className='py-2 px-3 bg-black text-slate-100 text-[12px] font-Poppins rounded-lg' onClick={() => navigate('/Admin/Add-table')}>Add Meja Baru</button>
-                            </div>
-                            <div>
                                 <input 
                                     className='w-40 sm:w-60 py-2 px-3 border border-gray-400 rounded-md font-Poppins text-sm'
                                     placeholder='Cari No Meja'
@@ -143,4 +140,4 @@ const AdminListMeja = () => {
     );
 };
 
-export default AdminListMeja;
+export default WaitersListMeja;

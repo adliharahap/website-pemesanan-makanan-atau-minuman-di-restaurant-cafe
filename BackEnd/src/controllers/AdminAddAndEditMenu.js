@@ -22,44 +22,48 @@ const addMenutoDb = async (req, res) => {
 };
 
 const editMenuToDb = async(req, res) => {
-    const { menuId, namaMenu, deskripsi, harga, imageUrl, type, stock } = req.body;
-    const userRole = req.user.role;
+    try {
+        const { menuId, namaMenu, deskripsi, harga, imageUrl, type, stock } = req.body;
+        const userRole = req.user.role;
 
-    // Cek apakah pengguna memiliki peran admin
-    if (userRole !== 'admin') {
-        return res.status(403).json({ message: 'Akses ditolak, hanya admin yang dapat mengedit menu' });
-    }
-
-    // Cek apakah menuId diberikan
-    if (!menuId) {
-        return res.status(400).json({ message: 'Menu ID harus disediakan untuk mengedit menu' });
-    }
-
-    // Contoh query untuk memperbarui menu di database
-    const query = `
-        UPDATE menu
-        SET 
-            name = ?,
-            description = ?,
-            price = ?,
-            image_url = ?,
-            type = ?,
-            stock = ?
-        WHERE menu_id = ?
-    `;
-
-    db.query(query, [namaMenu, deskripsi, harga, imageUrl, type, stock, menuId], (err, result) => {
-        if (err) {
-            console.error('Error saat mengedit menu:', err);
-            return res.status(500).json({ message: 'Terjadi kesalahan pada server' });
+        // Cek apakah pengguna memiliki peran admin
+        if (userRole !== 'admin') {
+            return res.status(403).json({ message: 'Akses ditolak, hanya admin yang dapat mengedit menu' });
         }
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Menu tidak ditemukan' });
+        // Cek apakah menuId diberikan
+        if (!menuId) {
+            return res.status(400).json({ message: 'Menu ID harus disediakan untuk mengedit menu' });
         }
 
-        res.status(200).json({ message: 'Menu berhasil diperbarui' });
-    });
+        // Contoh query untuk memperbarui menu di database
+        const query = `
+            UPDATE menu
+            SET 
+                name = ?,
+                description = ?,
+                price = ?,
+                image_url = ?,
+                type = ?,
+                stock = ?
+            WHERE menu_id = ?
+        `;
+
+        db.query(query, [namaMenu, deskripsi, harga, imageUrl, type, stock, menuId], (err, result) => {
+            if (err) {
+                console.error('Error saat mengedit menu:', err);
+                return res.status(500).json({ message: 'Terjadi kesalahan pada server' });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: 'Menu tidak ditemukan' });
+            }
+
+            res.status(200).json({ message: 'Menu berhasil diperbarui' });
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Terjadi kesalahan pada server' });
+    }
 }
 
 const deleteMenu = async (req, res) => {

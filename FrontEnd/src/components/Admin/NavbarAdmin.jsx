@@ -12,13 +12,13 @@ const NavbarAdmin = () => {
         const hour = now.getHours(); // Mendapatkan jam dari waktu saat ini
     
         if (hour >= 5 && hour < 12) {
-            return "Good morning";
-        } else if (hour >= 12 && hour < 17) {
-            return "Good afternoon";
-        } else if (hour >= 17 && hour < 21) {
-            return "Good evening";
+            return "Selamat Pagi";
+        } else if (hour >= 12 && hour < 15) {
+            return "Selamat Siang";
+        } else if (hour >= 15 && hour < 19) {
+            return "Selamat Sore";
         } else {
-            return "Good night";
+            return "Selamat Malam";
         }
     }
 

@@ -2,8 +2,29 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { RiArmchairFill } from 'react-icons/ri';
 import TableImage from '../../assets/website_image/table.png';
+import Swal from 'sweetalert2';
 
-const ListMejaComponent = ({noMeja, seats, status, clicked}) => {
+const ListMejaOrder = ({noMeja, seats, status, clicked}) => {
+
+  const validateOrderTable = () => {
+    if(status === "available") {
+      clicked();
+    }else {
+      Swal.fire({
+        title: 'Meja Sudah Digunakan',
+        text: 'Apakah pelanggan ingin melakukan order tambahan?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          clicked();
+        }
+      });
+    }
+  }
+
   return (
     <motion.div
       className={`w-48 ${status === "available" ? 'bg-gradient-to-br from-green-100 to-green-200 border-green-300' : 'bg-gradient-to-br from-red-100 to-red-200 border-red-300'} shadow-md rounded-lg border cursor-pointer`}
@@ -11,7 +32,7 @@ const ListMejaComponent = ({noMeja, seats, status, clicked}) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, type: 'spring' }}
       whileHover={{ scale: 1.05, boxShadow: `0px 10px 15px ${status === "available" ? 'rgba(0, 128, 0, 0.3)' : 'rgba(255, 0, 0,0.3)'}` }}
-      onClick={clicked}
+      onClick={validateOrderTable}
     >
       <div className='w-full flex flex-col justify-center items-center py-4'>
         <p className={`font-Poppins text-[16px] font-semibold ${status === "available" ? 'text-green-900' : 'text-red-900'}`}>Meja {noMeja}</p>
@@ -34,18 +55,9 @@ const ListMejaComponent = ({noMeja, seats, status, clicked}) => {
             </motion.div>
           </div>
         </div>
-
-        <div className='w-full my-4'>
-          <motion.p
-            className={`font-Poppins text-[12px] font-medium py-2 px-4  ${status === "available" ? ' bg-gradient-to-r from-green-400 to-green-500' : ' bg-gradient-to-r from-red-400 to-red-500'} rounded-lg text-white shadow-sm`}
-            transition={{ duration: 0.3 }}
-          >
-            Tagihan Terakhir: {status === "available" ? 'Rp 0' : 'Rp 35,000'}
-          </motion.p>
-        </div>
       </div>
     </motion.div>
   );
 };
 
-export default ListMejaComponent;
+export default ListMejaOrder;

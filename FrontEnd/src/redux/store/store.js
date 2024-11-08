@@ -4,6 +4,9 @@ import LoginOrRegisterReducer from "../slices/LoginOrRegisterSlice";
 import userDataReducer from "../slices/userDataSlice";
 import sidebarReducer from '../slices/sidebarSlice';
 import NavbarOpenSlice from "../slices/admin/NavbarOpenSlice";
+import OrderReducer from "../slices/OrderSlice";
+import orderItemsReducer from '../slices/OrderItemsSlice';
+import DataMenuSelesaiDimasakReducer from '../slices/DataMenuSelesaiDimasakSlice'; 
 
 // Konfigurasi store Redux
 export const store = configureStore({
@@ -13,6 +16,9 @@ export const store = configureStore({
         LoginOrRegister: LoginOrRegisterReducer,
         userData: userDataReducer,
         sidebar: sidebarReducer,
+        order : OrderReducer,
+        orderItems: orderItemsReducer,
+        DataMenuSelesaiDimasak : DataMenuSelesaiDimasakReducer,
     },
 });
 

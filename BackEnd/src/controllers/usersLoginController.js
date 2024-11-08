@@ -27,7 +27,7 @@ const postLoginUser = async (req, res) => {
 
         // Generate token
         const token = jwt.sign(
-            { id: user.id, email: user.email, username: user.username, role: user.role },
+            { id: user.user_id, email: user.email, username: user.username, role: user.role },
             process.env.SECRET_KEY,
             { expiresIn: '24h' } // Token akan expired dalam 24 jam
         );

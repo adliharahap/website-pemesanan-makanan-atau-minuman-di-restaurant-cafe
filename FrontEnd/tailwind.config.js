@@ -13,6 +13,9 @@ export default {
         'Playwrite': ['Playwrite', 'sans-serif'],
         'Poppins': ['poppins', 'sans-serif'],
       },
+      screens: {
+        'medium': '800px',
+      }
     },
   },
   plugins: [],

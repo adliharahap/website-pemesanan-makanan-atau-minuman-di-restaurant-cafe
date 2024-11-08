@@ -3,45 +3,71 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const MenuList = ({ menu, getAllMenu }) => {
+const MenuList = ({ menu, getAllMenu}) => {
     const Navigate = useNavigate();
 
-    const DeleteMenuButton = async () => {
-
+    const handleUpdateStock = async () => {
         Swal.fire({
-            title: 'Yakin ingin menghapus menu ini?', 
-            text: "Aksi ini tidak bisa dibatalkan!", 
-            icon: 'warning', 
-            showCancelButton: true, 
-            confirmButtonColor: '#3085d6', 
-            cancelButtonColor: '#d33', 
-            confirmButtonText: 'Ya, hapus!', 
-            cancelButtonText: 'Batal'
-        }).then(async(result) => {
+            title: 'Update Stok Menu',
+            html: `
+                <div class="flex justify-center items-center gap-4">
+                    <label class="text-gray-700 font-poppins">Stock</label>
+                    <select
+                        class="w-52 p-3 border border-gray-300 rounded-md font-poppins"
+                        onfocus="this.classList.add('border-green-400')"
+                        onblur="this.classList.remove('border-green-400')"
+                        id="stockSelect"
+                    >
+                        <option value="tersedia">Tersedia</option>
+                        <option value="habis">Habis</option>
+                    </select>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Update',
+            cancelButtonText: 'Batal',
+            preConfirm: () => {
+                const stockValue = document.getElementById('stockSelect').value;
+                if (!stockValue) {
+                    Swal.showValidationMessage('Harap pilih status stok!');
+                }
+                return stockValue;
+            }
+        }).then(async (result) => {
             if (result.isConfirmed) {
+                const updatedStockStatus = result.value;
+                console.log('Status stok yang diupdate:', updatedStockStatus);
+
                 try {
                     const menuId = menu.menu_id;
+                    const EditMenuData = { menuId, stock: updatedStockStatus };
                     const token = localStorage.getItem('token');
-            
-                    const response = await axios.post('http://localhost:3001/api/users/admin/delete-menu', {menuId}, {
-                        headers: {
-                            Authorization: `Bearer ${token}`, // Menambahkan token di header
-                        },
-                    });
-            
+
+                    const response = await axios.post(
+                        'http://localhost:3001/api/users/Chef/UpdateStockMenu',
+                        EditMenuData,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`, // Menambahkan token di header
+                            },
+                        }
+                    );
+
                     if (response) {
-                        // Tampilkan alert sukses
                         Swal.fire({
                             title: 'Sukses!',
-                            text: 'Berhasil Menghapus Menu',
+                            text: 'Berhasil update Menu',
                             icon: 'success',
                             confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                getAllMenu();
+                            }
                         });
-                        getAllMenu();
                     } else {
                         Swal.fire({
                             title: 'Gagal!',
-                            text: 'Gagal Menghapus Menu',
+                            text: 'Menu gagal di update',
                             icon: 'error',
                             confirmButtonText: 'Coba Lagi',
                         });
@@ -115,21 +141,10 @@ const MenuList = ({ menu, getAllMenu }) => {
                             transition={{ duration: 0.2 }}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                Navigate('/Admin/Edit-Menu', { state: { menu } })
+                                handleUpdateStock();
                             }}
                         >
-                            Edit Menu
-                        </motion.button>
-                        <motion.button
-                            className='py-2 px-2 sm:py-2 sm:px-3 bg-red-600 hover:bg-red-700 text-slate-100 text-[10px] sm:text-[12px] font-Poppins rounded-lg'
-                            whileHover={{ scale: 1.1 }}
-                            transition={{ duration: 0.2 }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                DeleteMenuButton();
-                            }}
-                        >
-                            Hapus Menu
+                            Update Stock menu
                         </motion.button>
                     </motion.div>
                 </div>

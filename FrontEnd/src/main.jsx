@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store/store.js';
 import Homepages from './Pages/Homepages.jsx';
 import Loginpages from './Pages/Loginpages.jsx';
-import LoginForm from './sections/LoginForm.jsx';
 import { AnimatePresence } from 'framer-motion';
 import UserPages from './Pages/UserPages.jsx';
 import AdminPages from './Pages/Admin/AdminDashboardPages.jsx';
@@ -17,6 +16,19 @@ import AdminUserPages from './Pages/Admin/UserPages/AdminUserPages.jsx';
 import AdminListMejaPages from './Pages/Admin/ListMejaPages/AdminListMejaPages.jsx';
 import AdminEditMenuPages from './Pages/Admin/MenuPages/AdminEditMenuPages.jsx';
 import MenuDescriptionPages from './Pages/MenuDescriptionPages.jsx';
+import AdminAddMejaPages from './Pages/Admin/ListMejaPages/AdminAddMejaPages.jsx';
+import WaitersDashboard from './Pages/Waiters/WaitersDashboard.jsx';
+import WaitersListMeja from './Pages/Waiters/WaitersListMejaPages.jsx';
+import WaitersNewOrderPages from './Pages/Waiters/WaitersNewOrderPages.jsx';
+import OrderMenuModal from './components/Waiters/OrderMenuModal.jsx';
+import CartPages from './Pages/Waiters/CartPages.jsx';
+import PesananSelesaiDimasakPages from './Pages/Waiters/PesananSelesaiDimasakPages.jsx';
+import PesananSayaPages from './Pages/Waiters/PesananSayaPages.jsx';
+import ConfirmOrdersChef from './Pages/Chef/ConfirmOrdersChef.jsx';
+import PesananDimasakChef from './Pages/Chef/PesananDimasakChef.jsx';
+import RecipeSearchPage from './Pages/Chef/RecipeSearchPage.jsx';
+import UpdateStockMenuPage from './Pages/Chef/UpdateStockMenuPage.jsx';
+import OrderReceiptPDF from './components/Waiters/OrderReceiptPDF.jsx';
 
 const routes = [
   {
@@ -29,7 +41,7 @@ const routes = [
   },
   {
     path: "/test",
-    element: <LoginForm />,
+    element: <OrderMenuModal />,
   },
   {
     path: "/User/Dashboard",
@@ -64,8 +76,56 @@ const routes = [
     element: <AdminListMejaPages />
   },
   {
+    path: "/Admin/add-table",
+    element: <AdminAddMejaPages />
+  },
+  {
+    path: "/Waiter/Dashboard",
+    element: <WaitersDashboard />
+  },
+  {
+    path: "/Waiter/NewOrder",
+    element: <WaitersNewOrderPages />
+  },
+  {
+    path: "/Waiter/PesananSaya",
+    element: <PesananSayaPages />
+  },
+  {
+    path: "/Waiter/Daftar-Keranjang",
+    element: <CartPages />
+  },
+  {
+    path: "/Waiter/List-meja",
+    element: <WaitersListMeja />
+  },
+  {
+    path: "/Waiter/PesananSelesaiDimasak",
+    element: <PesananSelesaiDimasakPages />
+  },
+  {
+    path: "/Chef/ConfirmOrders",
+    element: <ConfirmOrdersChef />
+  },
+  {
+    path: "/Chef/OrderCooking",
+    element: <PesananDimasakChef />
+  },
+  {
+    path: "/Chef/UpdateStockMenu",
+    element: <UpdateStockMenuPage />
+  },
+  {
+    path: "/Chef/Recipe",
+    element: <RecipeSearchPage />
+  },
+  {
     path: "/AccesDecline",
     element: <DeclineAcces />,
+  },
+  {
+    path: "/pdf-viewer",
+    element: <OrderReceiptPDF />,
   }
 ];
 
