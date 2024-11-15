@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdDelete } from 'react-icons/md'; // Icon Delete
@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import { resetOrder } from '../../redux/slices/OrderSlice';
 import { useNavigate } from 'react-router-dom';
 import { verifyToken } from '../../utils/checkUserToken';
-import { pdf } from '@react-pdf/renderer';
 import OrderReceiptPDF, { getFileName, OrderReceipt } from '../../components/Waiters/OrderReceiptPDF';
 
 // Helper function to format currency to Rupiah
@@ -92,19 +91,52 @@ const CartPages = () => {
                     title: 'Sukses!',
                     text: 'berhasil Order Menu.',
                     icon: 'success',
+                    showCancelButton: true,
+                    cancelButtonText: 'Selesai',
+                    cancelButtonColor: 'rgb(34 197 94)',
                     confirmButtonText: 'Cetak PDF',
                 }).then(async(result) => {
                     if (result.isConfirmed) {
                         try {
                             navigate('/Waiter/NewOrder');
+                            navigate('/pdf-viewer');
                             
                             // Reset state dan navigate
-                            dispatch(resetOrder());
-                            dispatch(clearOrderItems());
-                            navigate('/pdf-viewer');
+                            setTimeout(() => {
+                                dispatch(resetOrder());
+                                dispatch(clearOrderItems());
+                            }, 2000);
                         } catch (error) {
                             console.log("error : ", error);   
                         }
+                    }else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire({
+                            title: 'Peringatan!',
+                            text: 'Apakah Anda yakin tidak ingin mencetak struk? Tidak mencetak struk dapat meningkatkan risiko kebingungannya pelanggan terkait pembayaran.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            cancelButtonText: 'Selesai',
+                            confirmButtonText: 'Cetak Struk',
+                        }).then(async(result) => {
+                            if (result.isConfirmed) {
+                                try {
+                                    navigate('/Waiter/NewOrder');
+                                    navigate('/pdf-viewer');
+                                    
+                                    // Reset state dan navigate
+                                    // dispatch(resetOrder());
+                                    // dispatch(clearOrderItems());
+                                } catch (error) {
+                                    console.log("error : ", error);   
+                                }
+                            }else if (result.dismiss === Swal.DismissReason.cancel) {
+                                navigate('/Waiter/NewOrder');
+                            
+                                // Reset state dan navigate
+                                dispatch(resetOrder());
+                                dispatch(clearOrderItems());
+                            }
+                        })
                     }
                 });
             } else {

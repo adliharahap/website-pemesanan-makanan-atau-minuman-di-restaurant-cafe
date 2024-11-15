@@ -14,6 +14,7 @@ const { getAllMyDataOrders } = require('../controllers/Waiters/getAllMyDataOrder
 const { getConfirmOrders, handleConfirmedOrder } = require('../controllers/Chef/getConfirmOrders');
 const { handleDoneCooking, getCookingOrders } = require('../controllers/Chef/getCookingOrders');
 const { handleUpdateStockMenu } = require('../controllers/Chef/handleUpdateStockMenu');
+const { getPaymentOrders } = require('../controllers/Cashier/getPaymentOrders');
 const router = express.Router();
 
 router.get('/verify-token', verifyToken);
@@ -44,5 +45,8 @@ router.get('/Chef/getCookingOrders', authenticateToken, getCookingOrders);
 router.post('/Chef/handleConfirmedOrder', authenticateToken, handleConfirmedOrder);
 router.post('/Chef/handleDoneCooking', authenticateToken, handleDoneCooking);
 router.post('/Chef/UpdateStockMenu', authenticateToken, handleUpdateStockMenu);
+
+// router cashier
+router.get('/Cashier/getPaymentOrders', authenticateToken, getPaymentOrders);
 
 module.exports = router;

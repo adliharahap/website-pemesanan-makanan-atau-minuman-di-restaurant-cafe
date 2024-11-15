@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { verifyToken } from "../../utils/checkUserToken";
-import { setActiveItem } from "../../redux/slices/sidebarSlice";
-import { AnimatePresence } from "framer-motion";
-import SidebarChef from "../../components/Chef/SidebarChef";
-import NavbarAdmin from "../../components/Admin/NavbarAdmin";
-import { LuClipboardList } from "react-icons/lu";
-import { GoSearch } from "react-icons/go";
-import axios from "axios";
-import { FiCheckCircle } from "react-icons/fi";
+import { AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react'
+import NavbarAdmin from '../../components/Admin/NavbarAdmin';
+import SidebarCashier from '../../components/Cashier/SidebarCashier';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setActiveItem } from '../../redux/slices/sidebarSlice';
+import { verifyToken } from '../../utils/checkUserToken';
+import NoDataFound from '../../components/NoDataFound';
+import { PiMoneyWavyBold } from 'react-icons/pi';
+import { GoSearch } from 'react-icons/go';
+import axios from 'axios';
 import { motion } from "framer-motion";
-import { MdRestaurantMenu } from "react-icons/md";
-import { IoPricetag } from "react-icons/io5";
-import Swal from "sweetalert2";
-import NoDataFound from "../../components/NoDataFound";
+import { MdRestaurantMenu } from 'react-icons/md';
+import { IoPricetag } from 'react-icons/io5';
+import { FiCheckCircle } from 'react-icons/fi';
+import PaymentComponent from '../../components/Cashier/PaymentComponent';
 
-const ConfirmOrdersChef = () => {
+const PaymentCashier = () => {
   const userData = useSelector((state) => state.userData);
   const [data, setdata] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // State untuk pencarian
+  const [isPayment, setIsPayment] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,69 +35,8 @@ const ConfirmOrdersChef = () => {
     }).format(amount);
   };
 
-  const handleConfirmOrder = (orderId) => {
-    Swal.fire({
-      title: `Konfirmasi Pesanan?`,
-      text: "Harap pastikan stock untuk membuat pesanan ini tersedia sebelum menekan tombol ini! Kesalahan dapat berakibat fatal bagi layanan kami dan pelanggan.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, stock tersedia!",
-      cancelButtonText: "cancel",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const token = localStorage.getItem("token");
-
-          const response = await axios.post(
-            "http://localhost:3001/api/users/Chef/handleConfirmedOrder",
-            { orderId },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`, // Menambahkan token di header
-              },
-            }
-          );
-
-          if (response) {
-            Swal.fire({
-              title: "Pesanan Berhasil Dikonfirmasi",
-              text: "Status pesanan telah diperbarui menjadi sedang dimasak.",
-              icon: "success",
-              confirmButtonText: "Oke",
-            });
-          } else {
-            Swal.fire({
-              title: "Terjadi Masalah",
-              text: "Konfirmasi pesanan tidak berhasil. Silakan coba lagi.",
-              icon: "error",
-              confirmButtonText: "Oke",
-            });
-          }
-        } catch (error) {
-          Swal.fire({
-            title: "Gagal Mengonfirmasi Pesanan",
-            text: "Terjadi kesalahan dalam memproses permintaan. Pastikan koneksi internet stabil dan coba lagi.",
-            icon: "error",
-            confirmButtonText: "Oke",
-          });
-          console.log("error : ", error);
-        }
-      } else {
-        Swal.fire({
-          title: "Konfirmasi Dibatalkan",
-          text: "Pesanan tidak dikonfirmasi. Pastikan untuk melakukan pengecekan stock terlebih dahulu sebelum mengkonfirmasi",
-          icon: "info",
-          confirmButtonText: "Oke",
-        });
-      }
-    });
-  };
-
   useEffect(() => {
-    // mengarahkan active yang benar ke sidebar
-    dispatch(setActiveItem("Konfirmasi Pesanan"));
+    dispatch(setActiveItem("Pembayaran"));
 
     const checkLoginOrNot = async () => {
       const token = localStorage.getItem("token");
@@ -104,7 +45,7 @@ const ConfirmOrdersChef = () => {
         const isValid = await verifyToken(token, dispatch);
         if (isValid) {
           if (userData && userData.role) {
-            if (userData.role !== "chef") {
+            if (userData.role !== "cashier") {
               navigate("/AccesDecline");
             }
           } else {
@@ -117,16 +58,15 @@ const ConfirmOrdersChef = () => {
         navigate("/login");
       }
     };
-
     checkLoginOrNot();
-  }, [navigate, dispatch, userData]);
+  }, [navigate, userData]);
 
-  const getConfirmOrders = async () => {
+  const getServedOrders = async () => {
     try {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:3001/api/users/Chef/getConfirmOrders",
+        "http://localhost:3001/api/users/Cashier/getPaymentOrders",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -137,29 +77,33 @@ const ConfirmOrdersChef = () => {
       }else {
         setdata(response.data.orders);
       }
-
     } catch (error) {
       console.log("error : ", error);
     }
 
     setTimeout(() => {
-      getConfirmOrders();
+      getServedOrders();
     }, 3000);
   };
 
   useEffect(() => {
-    getConfirmOrders();
+    getServedOrders();
   }, [dispatch]);
 
   const filteredData = data.filter((order) =>
     order.table_number.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleConfirmOrder = async(orderData) => {
+     setIsPayment(true);
+     setSelectedPayment(orderData);
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 flex">
       {/* Sidebar */}
       <AnimatePresence>
-        <SidebarChef />
+        <SidebarCashier />
       </AnimatePresence>
 
       {/* Main Content */}
@@ -168,11 +112,17 @@ const ConfirmOrdersChef = () => {
         <div className="p-6">
           <div className="mb-4">
             <h1 className="text-2xl font-semibold text-gray-800 flex items-center font-Poppins mb-1">
-              <LuClipboardList className="text-green-500 mr-2" />
-              Konfirmasi Pesanan
+              <PiMoneyWavyBold className="text-green-500 mr-2" />
+              Pembayaran Pesanan
             </h1>
           </div>
 
+          {isPayment ? (
+            <>
+              <PaymentComponent orderData={selectedPayment} setIsPayment={setIsPayment} />
+            </>
+          ) : (
+          <>
           {/* Input Pencarian */}
           <div className="mb-4 flex justify-end">
             <div className="relative">
@@ -184,8 +134,7 @@ const ConfirmOrdersChef = () => {
                 className="p-2 border border-gray-300 rounded-md focus:border-green-300 pl-9 focus:ring-0 w-72" // Atur lebar di sini
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <GoSearch className="text-gray-500" />{" "}
-                {/* Ganti dengan ikon yang sesuai */}
+                <GoSearch  className="text-gray-500" />{" "}
               </div>
             </div>
           </div>
@@ -259,11 +208,11 @@ const ConfirmOrdersChef = () => {
                           Total Harga: {formatToIDR(order.total_price)}
                         </p>
                         <button
-                          onClick={() => handleConfirmOrder(order.order_id)}
+                          onClick={() => handleConfirmOrder(order)}
                           className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md flex items-center gap-2 font-Poppins"
                         >
                           <FiCheckCircle className="text-white" />
-                          Konfirmasi Pesanan
+                          Bayar Pesanan
                         </button>
                       </div>
                     </div>
@@ -273,8 +222,10 @@ const ConfirmOrdersChef = () => {
             </>
           ) : (
             <>
-              <NoDataFound message="Belum ada konfirmasi pesanan saat ini" />
+              <NoDataFound message="Belum ada pesanan berstatus served saat ini" />
             </>
+          )};
+          </>
           )}
         </div>
       </div>
@@ -282,4 +233,4 @@ const ConfirmOrdersChef = () => {
   );
 };
 
-export default ConfirmOrdersChef;
+export default PaymentCashier;

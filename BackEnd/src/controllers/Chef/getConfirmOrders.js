@@ -43,7 +43,7 @@ const getConfirmOrders = async(req, res) => {
             }
 
             if (results.length === 0) {
-                return res.status(404).json({ message: 'Tidak ada pesanan dengan status pending.' });
+                return res.status(204).json({ message: 'Tidak ada pesanan dengan status pending.' });
             }
 
             const ordersMap = {};

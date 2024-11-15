@@ -1,11 +1,11 @@
 const db = require("../../database/databases");
 
-const getCookingOrders = async(req, res) => {
+const getPaymentOrders = async(req, res) => {
     try {
         const userRole = req.user.role;
 
-        if (userRole !== 'chef') {
-            return res.status(403).json({ message: 'Akses ditolak, hanya chef yang dapat mengakses ini' });
+        if (userRole !== 'cashier') {
+            return res.status(403).json({ message: 'Akses ditolak, hanya cashier yang dapat mengakses ini' });
         }
 
         const sql = `
@@ -33,7 +33,7 @@ const getCookingOrders = async(req, res) => {
             JOIN 
                 menu ON order_items.menu_id = menu.menu_id
             WHERE 
-                orders.status = 'cooking';
+                orders.status = 'served';
         `;
 
         db.query(sql, (error, results) => {
@@ -43,7 +43,7 @@ const getCookingOrders = async(req, res) => {
             }
 
             if (results.length === 0) {
-                return res.status(204).json({ message: 'Tidak ada pesanan dengan status cooking.' });
+                return res.status(204).json({ message: 'Tidak ada pesanan dengan status served.' });
             }
 
             const ordersMap = {};
@@ -82,46 +82,4 @@ const getCookingOrders = async(req, res) => {
     }
 }
 
-const handleDoneCooking = async(req, res) => {
-    try {
-        const userRole = req.user.role;
-        const { orderId } = req.body;
-
-        if (userRole !== 'chef') {
-            return res.status(403).json({
-                message: 'Akses ditolak, hanya chef yang dapat melakukan order',
-            });
-        }
-
-        const query = 'UPDATE orders SET status = ? WHERE order_id = ?';
-        const values = ['ready', orderId];
-
-        db.query(query, values, (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Terjadi kesalahan saat mengubah status pesanan',
-                    error: err,
-                });
-            }
-
-            if (result.affectedRows === 0) {
-                return res.status(404).json({
-                    message: 'Pesanan tidak ditemukan atau telah diupdate',
-                });
-            }
-
-            res.status(200).json({
-                message: 'Status pesanan berhasil diubah menjadi ready',
-                data: { order_id: orderId, status: 'ready' },
-            });
-        });
-    } catch (e) {
-        console.error("Error:", e);
-        res.status(500).json({
-            message: 'Terjadi kesalahan pada server',
-            error: e,
-        });
-    }
-}
-
-module.exports = {getCookingOrders, handleDoneCooking};
+module.exports = {getPaymentOrders};

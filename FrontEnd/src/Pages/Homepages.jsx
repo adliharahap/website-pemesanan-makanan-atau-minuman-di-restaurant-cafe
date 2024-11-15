@@ -24,7 +24,7 @@ const Homepages = () => {
                         } else if (userData.role === "chef") {
                             navigate('/Chef/ConfirmOrders');
                         } else if (userData.role === "cashier") {
-                            navigate('/Cashier/Dashboard');
+                            navigate('/Cashier/Payment');
                         } else if (userData.role === "waiter") {
                             navigate('/Waiter/Dashboard');
                         } else if (userData.role === "user") {

@@ -6,7 +6,6 @@ import { MdRestaurantMenu } from "react-icons/md";
 import { IoFastFoodSharp, IoPricetag } from "react-icons/io5";
 import { GoSearch } from "react-icons/go";
 import { AnimatePresence } from "framer-motion";
-import SidebarWaiter from "../../components/Waiters/SidebarWaiter";
 import NavbarAdmin from "../../components/Admin/NavbarAdmin";
 import { verifyToken } from "../../utils/checkUserToken";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +14,6 @@ import { setActiveItem } from "../../redux/slices/sidebarSlice";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SidebarChef from "../../components/Chef/SidebarChef";
-import AllMenuCookingChef from "../../components/Chef/AllMenuCookingChef";
 import { FaUtensils } from "react-icons/fa";
 
 const PesananDimasakChef = () => {
@@ -133,9 +131,14 @@ const PesananDimasakChef = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (response?.data.orders) setdata(response.data.orders);
+      
+      if (response.status === 204) {
+        setdata([]);
+      }else {
+        setdata(response.data.orders);
+      }
     } catch (error) {
-      console.log("Error:", error);
+        console.log("error : ", error);
     }
     setTimeout(() => {
       getAllDataWantToCooking();

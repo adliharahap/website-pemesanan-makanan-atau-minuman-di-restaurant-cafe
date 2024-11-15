@@ -20,7 +20,16 @@ const userDataSlice = createSlice({
             state.isAuthenticated = true;
         },
         logoutUser: (state) => {
-            return initialState;
+            state.id = null;
+            state.username = null;
+            state.email = null;
+            state.role = null;
+            state.isAuthenticated = false;
+            
+            // Lalu reload halaman
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         },
     },
 });

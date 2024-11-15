@@ -29,6 +29,7 @@ import PesananDimasakChef from './Pages/Chef/PesananDimasakChef.jsx';
 import RecipeSearchPage from './Pages/Chef/RecipeSearchPage.jsx';
 import UpdateStockMenuPage from './Pages/Chef/UpdateStockMenuPage.jsx';
 import OrderReceiptPDF from './components/Waiters/OrderReceiptPDF.jsx';
+import PaymentCashier from './Pages/Cashier/PaymentCashier.jsx';
 
 const routes = [
   {
@@ -118,6 +119,10 @@ const routes = [
   {
     path: "/Chef/Recipe",
     element: <RecipeSearchPage />
+  },
+  {
+    path: "/Cashier/Payment",
+    element: <PaymentCashier />,
   },
   {
     path: "/AccesDecline",

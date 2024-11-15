@@ -125,7 +125,11 @@ const PesananSelesaiDimasakPages = () => {
       const response = await axios.get('http://localhost:3001/api/users/Waiters/OrderFinishedCooking', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (response?.data.orders) setdata(response.data.orders);
+      if (response.status === 204) {
+        setdata([]);
+      }else {
+        setdata(response.data.orders);
+      }
     } catch (error) {
       console.log("Error:", error);
     }

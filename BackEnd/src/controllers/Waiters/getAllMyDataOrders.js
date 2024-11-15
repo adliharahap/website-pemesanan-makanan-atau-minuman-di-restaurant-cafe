@@ -44,7 +44,7 @@ const getAllMyDataOrders = async (req, res) => {
             }
 
             if (results.length === 0) {
-                return res.status(404).json({ message: 'Tidak ada pesanan untuk pengguna ini.' });
+                return res.status(204).json({ message: 'Tidak ada pesanan untuk pengguna ini.' });
             }
 
             const ordersMap = {};

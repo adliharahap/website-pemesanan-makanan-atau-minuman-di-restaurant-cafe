@@ -70,8 +70,10 @@ const PesananSayaPages = () => {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (response) { 
-                setdata(response.data.orders); 
+            if (response.status === 204) {
+                setdata([]);
+            }else {
+                setdata(response.data.orders);
             }
         } catch (error) {
             console.log("error : ", error);
