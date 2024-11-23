@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MdCheckCircle, MdAttachMoney, MdPayment, MdArrowForward, MdArrowBack, MdDiscount, MdCreditCard, MdAccessTime, MdDateRange } from 'react-icons/md'; // Menambahkan ikon baru
 
-const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, change, currentTime, CurrentDate, NoTransaksi, waiterName, NoTabel, MenuDetails }) => {
+const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, change, currentTime, CurrentDate, NoTransaksi, waiterName, NoTabel, MenuDetails, setIsPayment }) => {
 
   // Format IDR
   const formatToIDR = (amount) => {
@@ -138,7 +138,10 @@ const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, 
               {/* Close Button */}
               <button
                 className="bg-green-500 text-white rounded px-6 py-3 w-full mt-4 hover:bg-green-600 transition-all"
-                onClick={() => setIsModal(false)}
+                onClick={() => {
+                  setIsModal(false);
+                  setIsPayment(false);
+                }}
               >
                 Selesai
               </button>

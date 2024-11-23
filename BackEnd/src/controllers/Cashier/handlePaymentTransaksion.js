@@ -26,6 +26,10 @@ const handlePaymentTransaksion = async (req, res) => {
       return res.status(400).json({ message: 'Transaction ID (NoTransaksi) tidak boleh kosong.' });
     }
 
+    if (discount.trim() === '') {
+      return res.status(400).json({ message: 'column discount tidak boleh kosong.' });
+    }
+
     const menuDetailsString = JSON.stringify(menuDetails); // Ubah menjadi string agar dapat disimpan di kolom JSON
 
     // Query untuk menyimpan transaksi

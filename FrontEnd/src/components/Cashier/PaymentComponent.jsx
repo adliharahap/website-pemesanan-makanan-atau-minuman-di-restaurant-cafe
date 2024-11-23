@@ -157,7 +157,7 @@ const PaymentComponent = ({ orderData, setIsPayment }) => {
 
   return (
     <>
-    <PaymentSuccesModal isModal={isModal} setIsModal={setIsModal} paidAmount={paidAmount} discount={discount} change={change} total={total} currentTime={currentTime} CurrentDate={currentDate} NoTransaksi={NoTransaksi} waiterName={orderData.waiter_name} NoTabel={orderData.table_number} MenuDetails={orderData.order_items} />
+    <PaymentSuccesModal isModal={isModal} setIsModal={setIsModal} paidAmount={paidAmount} discount={discount} change={change} total={total} currentTime={currentTime} CurrentDate={currentDate} NoTransaksi={NoTransaksi} waiterName={orderData.waiter_name} NoTabel={orderData.table_number} MenuDetails={orderData.order_items} setIsPayment={setIsPayment} />
     <motion.div
       className="bg-white p-8 h-auto rounded-md shadow-lg flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 w-full max-w-4xl mx-auto"
       initial={{ opacity: 0, y: 50 }}

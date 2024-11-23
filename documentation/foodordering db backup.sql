@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 12 Nov 2024 pada 00.38
+-- Waktu pembuatan: 23 Nov 2024 pada 08.56
 -- Versi server: 8.0.30
 -- Versi PHP: 8.1.10
 
@@ -29,12 +29,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `menu` (
   `menu_id` int NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `price` decimal(10,2) NOT NULL,
-  `image_url` longtext COLLATE utf8mb4_general_ci,
-  `Type` enum('Makanan','Minuman') COLLATE utf8mb4_general_ci NOT NULL,
-  `stock` enum('Tersedia','Habis') COLLATE utf8mb4_general_ci NOT NULL,
+  `image_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Type` enum('Makanan','Minuman') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `stock` enum('Tersedia','Habis') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -66,24 +66,6 @@ CREATE TABLE `orders` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `orders`
---
-
-INSERT INTO `orders` (`order_id`, `table_id`, `waiter_id`, `total_price`, `status`, `created_at`, `updated_at`) VALUES
-(7, 1, 19, 59000.00, 'served', '2024-10-23 09:56:47', '2024-11-08 16:46:48'),
-(9, 2, 19, 29000.00, 'served', '2024-10-23 10:36:37', '2024-11-08 15:31:07'),
-(10, 3, 19, 157000.00, 'ready', '2024-10-25 09:19:13', '2024-10-28 10:20:25'),
-(11, 9, 19, 34000.00, 'ready', '2024-10-25 09:37:35', '2024-10-28 10:20:33'),
-(12, 7, 23, 58000.00, 'served', '2024-10-28 10:21:23', '2024-10-28 10:23:25'),
-(13, 8, 23, 104000.00, 'pending', '2024-10-29 09:21:39', '2024-10-29 09:21:39'),
-(14, 8, 23, 104000.00, 'pending', '2024-10-29 09:25:52', '2024-10-29 09:25:52'),
-(15, 8, 23, 104000.00, 'pending', '2024-10-29 09:27:41', '2024-10-29 09:27:41'),
-(16, 9, 23, 52000.00, 'ready', '2024-10-29 09:41:11', '2024-11-11 04:51:11'),
-(17, 7, 23, 52000.00, 'pending', '2024-10-29 09:46:01', '2024-10-29 09:46:01'),
-(18, 7, 23, 52000.00, 'pending', '2024-10-29 09:47:56', '2024-10-29 09:47:56'),
-(19, 3, 23, 35000.00, 'ready', '2024-10-29 14:52:44', '2024-11-11 04:43:20');
-
 -- --------------------------------------------------------
 
 --
@@ -95,38 +77,9 @@ CREATE TABLE `order_items` (
   `order_id` int DEFAULT NULL,
   `menu_id` int DEFAULT NULL,
   `quantity` int NOT NULL,
-  `notes` longtext COLLATE utf8mb4_general_ci NOT NULL,
+  `notes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `order_items`
---
-
-INSERT INTO `order_items` (`order_item_id`, `order_id`, `menu_id`, `quantity`, `notes`, `price`) VALUES
-(9, 7, 19, 2, '', 12000.00),
-(10, 7, 25, 1, '', 35000.00),
-(12, 9, 19, 1, '', 12000.00),
-(13, 9, 22, 1, '', 17000.00),
-(14, 10, 19, 3, 'Bikin yang wueanak rek', 12000.00),
-(15, 10, 25, 2, 'Bikin bekuah Rek', 35000.00),
-(16, 10, 22, 3, 'alamak cik woelah', 17000.00),
-(17, 11, 22, 2, '', 17000.00),
-(18, 12, 19, 2, 'yang wuenak loh mas', 12000.00),
-(19, 12, 22, 2, '', 17000.00),
-(20, 13, 25, 2, '', 35000.00),
-(21, 13, 22, 2, '', 17000.00),
-(22, 14, 25, 2, '', 35000.00),
-(23, 14, 22, 2, '', 17000.00),
-(24, 15, 25, 2, '', 35000.00),
-(25, 15, 22, 2, '', 17000.00),
-(26, 16, 25, 1, '', 35000.00),
-(27, 16, 22, 1, '', 17000.00),
-(28, 17, 25, 1, '', 35000.00),
-(29, 17, 22, 1, 'yang wuenak rek bikin nya', 17000.00),
-(30, 18, 25, 1, '', 35000.00),
-(31, 18, 22, 1, 'yang wuenak rek bikin nya', 17000.00),
-(32, 19, 25, 1, '', 35000.00);
 
 -- --------------------------------------------------------
 
@@ -139,7 +92,7 @@ CREATE TABLE `payments` (
   `order_id` int DEFAULT NULL,
   `cashier_id` int DEFAULT NULL,
   `amount` decimal(10,2) NOT NULL,
-  `payment_method` enum('cash','card') COLLATE utf8mb4_general_ci NOT NULL,
+  `payment_method` enum('cash','card') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `paid_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -151,9 +104,9 @@ CREATE TABLE `payments` (
 
 CREATE TABLE `tables` (
   `table_id` int NOT NULL,
-  `table_number` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `table_number` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `seats` int NOT NULL,
-  `status` enum('available','occupied') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'available'
+  `status` enum('available','occupied') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -161,27 +114,12 @@ CREATE TABLE `tables` (
 --
 
 INSERT INTO `tables` (`table_id`, `table_number`, `seats`, `status`) VALUES
-(1, '001', 7, 'occupied'),
-(2, '002', 8, 'occupied'),
-(3, '003', 3, 'occupied'),
-(7, '004', 4, 'occupied'),
-(8, '005', 7, 'occupied'),
-(9, '006', 8, 'occupied');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `transactions`
---
-
-CREATE TABLE `transactions` (
-  `transaction_id` int NOT NULL,
-  `type` enum('income','expense') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(1, '001', 7, 'available'),
+(2, '002', 8, 'available'),
+(3, '003', 3, 'available'),
+(7, '004', 4, 'available'),
+(8, '005', 7, 'available'),
+(9, '006', 8, 'available');
 
 -- --------------------------------------------------------
 
@@ -190,17 +128,27 @@ CREATE TABLE `transactions` (
 --
 
 CREATE TABLE `transaction_history` (
-  `transaction_id` int NOT NULL,
-  `table_number` int NOT NULL,
+  `transaction_id` varchar(50) NOT NULL,
+  `table_number` varchar(20) NOT NULL,
   `payment_method` enum('cash') DEFAULT 'cash',
   `total_amount` decimal(10,2) NOT NULL,
+  `discount` int NOT NULL DEFAULT '0',
   `amount_received` decimal(10,2) NOT NULL,
   `change_amount` decimal(10,2) NOT NULL,
   `transaction_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `cashier_name` varchar(100) NOT NULL,
+  `waiter_name` varchar(100) NOT NULL,
   `status` enum('complete') DEFAULT 'complete',
   `menu_details` json NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `transaction_history`
+--
+
+INSERT INTO `transaction_history` (`transaction_id`, `table_number`, `payment_method`, `total_amount`, `discount`, `amount_received`, `change_amount`, `transaction_date`, `cashier_name`, `waiter_name`, `status`, `menu_details`) VALUES
+('TX-343174-746762', '2', 'cash', 15000.00, 0, 20000.00, 5000.00, '2024-11-23 08:42:23', 'azkaharahap', 'Adli Harahap 112', 'complete', '[{\"notes\": \"\", \"price\": 15000, \"menu_id\": 29, \"quantity\": 1, \"menu_name\": \"mie ayam\", \"order_item_id\": 43}]'),
+('TX-679081-384777', '3', 'cash', 32000.00, 0, 50000.00, 18000.00, '2024-11-23 08:31:19', 'azkaharahap', 'Adli Harahap 112', 'complete', '[{\"notes\": \"\", \"price\": 17000, \"menu_id\": 22, \"quantity\": 1, \"menu_name\": \"Jus jeruk\", \"order_item_id\": 42}, {\"notes\": \"\", \"price\": 15000, \"menu_id\": 29, \"quantity\": 1, \"menu_name\": \"mie ayam\", \"order_item_id\": 41}]');
 
 -- --------------------------------------------------------
 
@@ -210,10 +158,10 @@ CREATE TABLE `transaction_history` (
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('admin','chef','cashier','waiter','user') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','chef','cashier','waiter','user') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
   `profile_picture` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -226,7 +174,8 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `role`, `profil
 (17, 'adliharahap123', '$2b$10$zmj3jjHsmAzwF.Rz84GZtuJF20nwcnsjY0HDXtQwIUg5RG9T.80v6', 'alamak1123@gmail.com', 'admin', '', '2024-09-29 06:22:43'),
 (19, 'azkaharahap', '$2b$10$z2x9cNURbeA4HcghwNYorupW8FiIUNvZIY5WnZ8YAp/UvQaexzLG6', 'Azka11232@gmail.com', 'cashier', '', '2024-09-29 06:38:27'),
 (21, 'masrusdi', '$2b$10$lHqFPDwoft2PpSkp1441EuiHpCOmJ8zUwz2cCNs5ArgcRCdr93z4W', 'adliraahman9@gmail.com', 'waiter', '', '2024-09-30 04:03:03'),
-(23, 'adliHarahap1132', '$2b$10$z/VszyynFTbOwYvdyG2yi.FhVO8X7UVnuFBNSDX./.YTwPCvipdoi', 'adliraahman7@gmail.com', 'chef', '', '2024-10-28 10:17:53');
+(23, 'adliHarahap1132', '$2b$10$z/VszyynFTbOwYvdyG2yi.FhVO8X7UVnuFBNSDX./.YTwPCvipdoi', 'adliraahman7@gmail.com', 'chef', '', '2024-10-28 10:17:53'),
+(37, 'Adli Harahap 112', '$2b$10$TGRB/yWxe/trWXhlMbGACuTXQeuzwBttYsezTQer9UNYvDNOu5tKG', 'adli1121@gmail.com', 'waiter', NULL, '2024-11-15 05:20:19');
 
 --
 -- Indexes for dumped tables
@@ -270,13 +219,6 @@ ALTER TABLE `tables`
   ADD UNIQUE KEY `table_number` (`table_number`);
 
 --
--- Indeks untuk tabel `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`transaction_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
 -- Indeks untuk tabel `transaction_history`
 --
 ALTER TABLE `transaction_history`
@@ -304,13 +246,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT untuk tabel `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `order_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `payments`
@@ -325,22 +267,10 @@ ALTER TABLE `tables`
   MODIFY `table_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `transactions`
---
-ALTER TABLE `transactions`
-  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `transaction_history`
---
-ALTER TABLE `transaction_history`
-  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -366,12 +296,6 @@ ALTER TABLE `order_items`
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
   ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`cashier_id`) REFERENCES `users` (`user_id`);
-
---
--- Ketidakleluasaan untuk tabel `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

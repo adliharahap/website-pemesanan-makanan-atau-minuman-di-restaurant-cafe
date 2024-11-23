@@ -16,11 +16,13 @@ const { handleDoneCooking, getCookingOrders } = require('../controllers/Chef/get
 const { handleUpdateStockMenu } = require('../controllers/Chef/handleUpdateStockMenu');
 const { getPaymentOrders } = require('../controllers/Cashier/getPaymentOrders');
 const { handlePaymentTransaksion } = require('../controllers/Cashier/handlePaymentTransaksion');
+const { getTransactionHistory } = require('../controllers/getTransaktionHistory');
 const router = express.Router();
 
 router.get('/verify-token', verifyToken);
 router.get('/get-all-menu', getAllMenu);
 router.get('/get-all-table-data', getAlltable);
+router.get('/getTransaktionHistory', authenticateToken, getTransactionHistory);
 
 router.post('/registration', postRegistrationUserToDb);
 router.post('/login', postLoginUser); 
