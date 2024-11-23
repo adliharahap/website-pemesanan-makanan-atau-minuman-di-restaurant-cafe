@@ -15,6 +15,7 @@ const { getConfirmOrders, handleConfirmedOrder } = require('../controllers/Chef/
 const { handleDoneCooking, getCookingOrders } = require('../controllers/Chef/getCookingOrders');
 const { handleUpdateStockMenu } = require('../controllers/Chef/handleUpdateStockMenu');
 const { getPaymentOrders } = require('../controllers/Cashier/getPaymentOrders');
+const { handlePaymentTransaksion } = require('../controllers/Cashier/handlePaymentTransaksion');
 const router = express.Router();
 
 router.get('/verify-token', verifyToken);
@@ -48,5 +49,6 @@ router.post('/Chef/UpdateStockMenu', authenticateToken, handleUpdateStockMenu);
 
 // router cashier
 router.get('/Cashier/getPaymentOrders', authenticateToken, getPaymentOrders);
+router.post('/cashier/transaksion', authenticateToken, handlePaymentTransaksion);
 
 module.exports = router;

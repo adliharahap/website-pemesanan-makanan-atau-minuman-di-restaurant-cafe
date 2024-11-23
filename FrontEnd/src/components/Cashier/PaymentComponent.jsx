@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { MdCancel } from "react-icons/md";
 import PaymentSuccesModal from "./PaymentSuccesModal";
 import Swal from 'sweetalert2'
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 // Fungsi untuk format ke IDR
 const formatToIDR = (amount) => {
@@ -21,6 +23,7 @@ const PaymentComponent = ({ orderData, setIsPayment }) => {
   const [discount, setDiscount] = useState(0); // Diskon
   const [change, setChange] = useState(0); // Hasil kembalian
   const [isModal, setIsModal] = useState(false);
+  const userData = useSelector((state) => state.userData);
   const [currentTime, setCurrentTime] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [NoTransaksi, setNoTransaksi] = useState('');
@@ -30,25 +33,10 @@ const PaymentComponent = ({ orderData, setIsPayment }) => {
     return total - (total * discount) / 100;
   };
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    return `${hours} : ${minutes} : ${seconds}`;
-  };
-
-  const getCurrentDate = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${day} - ${month} - ${year}`;
-  };
-
   const generateTransactionId = () => {
     const timestamp = Date.now(); // Dapatkan timestamp saat ini
     const randomNum = Math.floor(Math.random() * 900000) + 100000; // Angka 6 digit acak
+    setNoTransaksi(`TX-${timestamp.toString().slice(-6)}-${randomNum}`);
     return `TX-${timestamp.toString().slice(-6)}-${randomNum}`;
   };
   
@@ -73,12 +61,9 @@ const PaymentComponent = ({ orderData, setIsPayment }) => {
         confirmButtonText: 'Ya, bayar sekarang!',
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-      }).then((result) => {
+      }).then(async(result) => {
         if (result.isConfirmed) {
-          setCurrentTime(getCurrentTime());
-          setCurrentDate(getCurrentDate());
-          setNoTransaksi(generateTransactionId());
-          setIsModal(true); 
+          handlePaymentTransaktion();
         }
       });
     }
@@ -89,14 +74,90 @@ const PaymentComponent = ({ orderData, setIsPayment }) => {
     setPaidAmount(amount);
   };
 
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    setCurrentTime(`${hours} : ${minutes} : ${seconds}`);
+    return `${hours} : ${minutes} : ${seconds}`;
+  };
+
+  const getCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    setCurrentDate(`${day} - ${month} - ${year}`);
+    return `${day} - ${month} - ${year}`;
+  };
+
   useEffect(() => {
     const discountedTotal = calculateDiscountedTotal();
     setChange(paidAmount - discountedTotal);
   }, [paidAmount, discount]);
 
+    // Membuat salinan MenuDetails tanpa "menu_image_url"
+    const sanitizedMenuDetails = orderData.order_items.map(item => {
+      const { menu_image_url, ...rest } = item;  // Menghapus menu_image_url
+      return rest;  // Mengembalikan objek tanpa menu_image_url
+    });
+
+  const handlePaymentTransaktion = async() => {
+    try {
+      const dataTransaksi = {
+        paymentMethod : "cash",
+        total : calculateDiscountedTotal(),
+        discount,
+        paidAmount,
+        change,
+        NoTransaksi : generateTransactionId(),
+        CashierName : userData.username,
+        status: "complete",
+        waiterName : orderData.waiter_name,
+        NoTabel : orderData.table_number,
+        menuDetails : sanitizedMenuDetails,
+      }
+  
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:3001/api/users/cashier/transaksion', {dataTransaksi}, {
+          headers: {
+              Authorization: `Bearer ${token}`, // Menambahkan token di header
+          },
+      });
+  
+      if(response) {
+        await getCurrentDate();
+        await getCurrentTime();
+        setIsModal(true);
+      }
+  
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message || "Terjadi kesalahan yang tidak diketahui.";
+    
+        // Tampilkan SweetAlert
+        Swal.fire({
+          icon: 'error', // Icon untuk menampilkan status error
+          title: 'Oops, terjadi kesalahan!',
+          text: errorMessage, // Pesan diambil dari server
+          footer: 'Silakan coba lagi atau hubungi administrator.',
+        });
+      } else {
+        // Tangani error lainnya
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops, terjadi kesalahan!',
+          text: 'Tidak dapat terhubung ke server. Pastikan koneksi Anda stabil.',
+          footer: 'Silakan coba lagi nanti.',
+        });
+      }
+    }
+  }
+
   return (
     <>
-    <PaymentSuccesModal isModal={isModal} setIsModal={setIsModal} paidAmount={paidAmount} discount={discount} change={change} total={total} currentTime={currentTime} CurrentDate={currentDate} NoTransaksi={NoTransaksi}  />
+    <PaymentSuccesModal isModal={isModal} setIsModal={setIsModal} paidAmount={paidAmount} discount={discount} change={change} total={total} currentTime={currentTime} CurrentDate={currentDate} NoTransaksi={NoTransaksi} waiterName={orderData.waiter_name} NoTabel={orderData.table_number} MenuDetails={orderData.order_items} />
     <motion.div
       className="bg-white p-8 h-auto rounded-md shadow-lg flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 w-full max-w-4xl mx-auto"
       initial={{ opacity: 0, y: 50 }}

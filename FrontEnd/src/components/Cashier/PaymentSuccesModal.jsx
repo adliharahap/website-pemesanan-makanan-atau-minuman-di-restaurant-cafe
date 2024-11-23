@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MdCheckCircle, MdAttachMoney, MdPayment, MdArrowForward, MdArrowBack, MdDiscount, MdCreditCard, MdAccessTime, MdDateRange } from 'react-icons/md'; // Menambahkan ikon baru
 
-const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, change, currentTime, CurrentDate, NoTransaksi }) => {
-  
+const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, change, currentTime, CurrentDate, NoTransaksi, waiterName, NoTabel, MenuDetails }) => {
+
   // Format IDR
   const formatToIDR = (amount) => {
     return new Intl.NumberFormat("id-ID", {
@@ -129,7 +129,7 @@ const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, 
               {/* Print Receipt Button */}
               <button
                 className="bg-blue-500 text-white rounded px-6 py-3 w-full mt-5 hover:bg-blue-600 transition-all"
-                onClick={() => alert("Struk akan dicetak!")}
+                onClick={() => handlePaymentTransaktion()}
               >
                 <MdPayment className="inline-block mr-2 text-xl" />
                 Cetak Struk Pembayaran
