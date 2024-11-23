@@ -1,9 +1,7 @@
 // OrderReceiptPDF.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
 import { motion } from 'framer-motion';
-import { FaPrint } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // Fungsi untuk format tanggal
@@ -233,8 +231,17 @@ export const OrderReceipt = ({ orderData, orderItems }) => {
 }
 
 const OrderReceiptPDF = () => {
-  const orderItems = useSelector((state) => state.orderItems.items);
-  const orderData = useSelector((state) => state.order);
+  const [orderData, setOrderData] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
+
+  useEffect(() => {
+    const storedOrderData = JSON.parse(localStorage.getItem('orderData'));
+    const storedOrderItems = JSON.parse(localStorage.getItem('orderItems'));
+
+    setOrderData(storedOrderData);
+    setOrderItems(storedOrderItems);
+  }, []);
+
 
   return (
     <motion.div 

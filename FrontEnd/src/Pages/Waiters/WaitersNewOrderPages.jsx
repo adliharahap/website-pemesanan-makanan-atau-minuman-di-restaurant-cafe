@@ -11,8 +11,9 @@ import axios from 'axios';
 import LightLogo from '../../assets/Logo/light_logo-removebg-preview.png';
 import { IoFastFood } from 'react-icons/io5';
 import WaitersMenuOrder from '../../components/Waiters/WaitersMenuOrder';
-import { setNoTable, setTableId, setWaitersId } from '../../redux/slices/OrderSlice';
+import { resetOrder, setNoTable, setTableId, setWaitersId } from '../../redux/slices/OrderSlice';
 import ListMejaOrder from '../../components/Waiters/ListMejaOrder';
+import { clearOrderItems } from '../../redux/slices/OrderItemsSlice';
 
 const WaitersNewOrderPages = () => {
     const userData = useSelector((state) => state.userData);
@@ -74,6 +75,9 @@ const WaitersNewOrderPages = () => {
     }
 
     const PilihMeja = (idMeja, status, noMeja) => {
+        dispatch(resetOrder());
+        dispatch(clearOrderItems());
+
         dispatch(setTableId(idMeja));
         dispatch(setWaitersId(userData.id));
         dispatch(setNoTable(noMeja));

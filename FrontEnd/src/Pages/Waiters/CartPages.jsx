@@ -98,14 +98,17 @@ const CartPages = () => {
                 }).then(async(result) => {
                     if (result.isConfirmed) {
                         try {
+                            localStorage.setItem('orderData', JSON.stringify(Order));
+                            localStorage.setItem('orderItems', JSON.stringify(orderItems));
+
                             navigate('/Waiter/NewOrder');
                             navigate('/pdf-viewer');
-                            
-                            // Reset state dan navigate
+
                             setTimeout(() => {
                                 dispatch(resetOrder());
                                 dispatch(clearOrderItems());
-                            }, 2000);
+                            }, 3000);
+                            
                         } catch (error) {
                             console.log("error : ", error);   
                         }
@@ -120,21 +123,26 @@ const CartPages = () => {
                         }).then(async(result) => {
                             if (result.isConfirmed) {
                                 try {
+                                    localStorage.setItem('orderData', JSON.stringify(orderData));
+                                    localStorage.setItem('orderItems', JSON.stringify(orderItems));
+
                                     navigate('/Waiter/NewOrder');
                                     navigate('/pdf-viewer');
+
+                                    setTimeout(() => {
+                                        dispatch(resetOrder());
+                                        dispatch(clearOrderItems());
+                                    }, 3000);
                                     
-                                    // Reset state dan navigate
-                                    // dispatch(resetOrder());
-                                    // dispatch(clearOrderItems());
                                 } catch (error) {
                                     console.log("error : ", error);   
                                 }
                             }else if (result.dismiss === Swal.DismissReason.cancel) {
-                                navigate('/Waiter/NewOrder');
-                            
-                                // Reset state dan navigate
                                 dispatch(resetOrder());
                                 dispatch(clearOrderItems());
+                                setTimeout(() => {
+                                    navigate('/Waiter/NewOrder');
+                                }, 500);
                             }
                         })
                     }
