@@ -20,7 +20,7 @@ function SidebarChef() {
         { label: 'Pesanan Dimasak', icon: <GiCampCookingPot color='#fff' />, path: '/Chef/OrderCooking' },
         { label: 'Update Stock Menu', icon: <MdOutlineRestaurantMenu color='#fff' />, path: '/Chef/UpdateStockMenu' },
         { label: 'Resep Makanan', icon: <GiSpellBook color='#fff' />, path: '/Chef/Recipe' },
-        { label: 'History Pesanan', icon: <GoHistory color='#fff' />, path: '/Chef/HistoryOrders' },
+        { label: 'History Penjualan', icon: <GoHistory color='#fff' />, path: '/HistoryOrders' },
     ];
 
     const activeItem = useSelector((state) => state.sidebar.activeItem);

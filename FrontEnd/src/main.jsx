@@ -30,7 +30,7 @@ import RecipeSearchPage from './Pages/Chef/RecipeSearchPage.jsx';
 import UpdateStockMenuPage from './Pages/Chef/UpdateStockMenuPage.jsx';
 import OrderReceiptPDF from './components/Waiters/OrderReceiptPDF.jsx';
 import PaymentCashier from './Pages/Cashier/PaymentCashier.jsx';
-import PenjualanHarian from './Pages/Cashier/PenjualanHarian.jsx';
+import HistoryOrders from './Pages/HistoryOrders';
 
 const routes = [
   {
@@ -126,8 +126,8 @@ const routes = [
     element: <PaymentCashier />,
   },
   {
-    path: "/Cashier/OrderCooking",
-    element: <PenjualanHarian />,
+    path: "/HistoryOrders",
+    element: <HistoryOrders />,
   },
   {
     path: "/AccesDecline",

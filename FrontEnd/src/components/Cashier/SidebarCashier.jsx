@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { setActiveItem } from '../../redux/slices/sidebarSlice';
 import { toggleNavbar } from '../../redux/slices/admin/NavbarOpenSlice';
 import { FaMoneyCheck } from "react-icons/fa6";
-import { IoNewspaperOutline } from "react-icons/io5";
 
 function SidebarCashier() {
     const dispatch = useDispatch();
@@ -17,9 +16,7 @@ function SidebarCashier() {
 
     const items = [
         { label: 'Pembayaran', icon: <FaMoneyCheck color='#fff' />, path: '/Cashier/Payment' },
-        { label: 'Penjualan Harian', icon: <IoNewspaperOutline color='#fff' />, path: '/Cashier/OrderCooking' },
-        { label: 'Batalkan Pesanan', icon: <MdOutlineCancel color='#fff' />, path: '/Cashier/UpdateStockMenu' },
-        { label: 'History Transaksi', icon: <GoHistory color='#fff' />, path: '/Cashier/HistoryOrders' },
+        { label: 'History Penjualan', icon: <GoHistory color='#fff' />, path: '/HistoryOrders' },
     ];
 
     const activeItem = useSelector((state) => state.sidebar.activeItem);

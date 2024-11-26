@@ -4,7 +4,7 @@ const getTransactionHistory = async (req, res) => {
     try {
         // Pastikan role adalah 'cashier'
         const userRole = req.user.role;
-        if (userRole !== "cashier") {
+        if (userRole === "user") {
             return res.status(403).json({ message: "Akses ditolak" });
         }
 

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MdDashboard, MdOutlineRestaurantMenu, MdTableBar, MdKeyboardDoubleArrowLeft } from 'react-icons/md';
 import { FaUsers } from 'react-icons/fa';
-import { IoFastFood } from 'react-icons/io5';
 import { motion } from "framer-motion";
 import { BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +8,7 @@ import Logout from '../../utils/UserLogOut';
 import { useNavigate } from 'react-router-dom';
 import { setActiveItem } from '../../redux/slices/sidebarSlice';
 import { toggleNavbar } from '../../redux/slices/admin/NavbarOpenSlice';
+import { GoHistory } from 'react-icons/go';
 
 function SidebarAdmin() {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ function SidebarAdmin() {
         { label: 'Menu', icon: <MdOutlineRestaurantMenu color='#fff' />, path: '/Admin/Menu' },
         { label: 'Pengguna', icon: <FaUsers color='#fff' />, path: '/Admin/Pengguna' },
         { label: 'List Meja', icon: <MdTableBar color='#fff' />, path: '/Admin/List-meja' },
-        { label: 'List Orders', icon: <IoFastFood color='#fff' />, path: '/Admin/List-orders' },
+        { label: 'History Penjualan', icon: <GoHistory color='#fff' />, path: '/HistoryOrders' },
     ];
 
     const activeItem = useSelector((state) => state.sidebar.activeItem);
