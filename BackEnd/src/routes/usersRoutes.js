@@ -17,6 +17,8 @@ const { handleUpdateStockMenu } = require('../controllers/Chef/handleUpdateStock
 const { getPaymentOrders } = require('../controllers/Cashier/getPaymentOrders');
 const { handlePaymentTransaksion } = require('../controllers/Cashier/handlePaymentTransaksion');
 const { getTransactionHistory } = require('../controllers/getTransaktionHistory');
+const { PesananSaatIni } = require('../controllers/AdminDashboard');
+const { AdminPendapatan } = require('../controllers/AdminPendapatan');
 const router = express.Router();
 
 router.get('/verify-token', verifyToken);
@@ -35,6 +37,8 @@ router.post('/admin/delete-menu', authenticateToken, deleteMenu);
 router.post('/admin/edit-role-user', authenticateToken, editRoleUser);
 router.post('/admin/delete-user', authenticateToken, deleteUserData);
 router.post('/Admin/Add-table', authenticateToken, AddMejaToDb);
+router.post('/Admin/Dashboard/PesananSaatIni', authenticateToken, PesananSaatIni);
+router.post('/Admin/Dashboard/Pendapatan', authenticateToken, AdminPendapatan);
 
 // router waiters
 router.post('/Waiters/OrderMenu', authenticateToken, submitOrder);

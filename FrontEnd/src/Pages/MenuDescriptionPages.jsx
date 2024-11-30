@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const MenuDescriptionPages = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { state } = location;
-
-    console.log(state.menu);
     
 
     return (
@@ -87,6 +86,7 @@ const MenuDescriptionPages = () => {
             >
                 <button
                     className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-md font-Poppins text-lg transition"
+                    onClick={() => {navigate(-1)}}
                 >
                     Kembali ke Daftar Menu
                 </button>

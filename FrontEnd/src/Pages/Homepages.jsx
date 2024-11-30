@@ -11,6 +11,7 @@ import HomeMenuList from '../components/LandingPagesComponent/HomeMenuList';
 import HelpSection from "../components/LandingPagesComponent/HelpSection";
 import LocationSection from "../components/LandingPagesComponent/LocationSection";
 import CopyrightSection from "../components/LandingPagesComponent/CopyrightSection";
+import BackgroundImage from "../assets/website_image/background.jpg"
 
 const Homepages = () => {
   const [loading, setLoading] = useState(true);
@@ -25,25 +26,24 @@ const Homepages = () => {
       if (token) {
         const isValid = await verifyToken(token, dispatch);
         if (isValid) {
-          // if (userData && userData.role) {
-          //   if (userData.role === "admin") {
-          //     navigate("/Admin/Dashboard");
-          //   } else if (userData.role === "chef") {
-          //     navigate("/Chef/ConfirmOrders");
-          //   } else if (userData.role === "cashier") {
-          //     navigate("/Cashier/Payment");
-          //   } else if (userData.role === "waiter") {
-          //     navigate("/Waiter/Dashboard");
-          //   } else {
-          //     navigate("/");
-          //   }
-          // }
+          if (userData && userData.role) {
+            if (userData.role === "admin") {
+              navigate("/Admin/Dashboard");
+            } else if (userData.role === "chef") {
+              navigate("/Chef/ConfirmOrders");
+            } else if (userData.role === "cashier") {
+              navigate("/Cashier/Payment");
+            } else if (userData.role === "waiter") {
+              navigate("/Waiter/Dashboard");
+            } else {
+              navigate("/");
+            }
+          }
         } else {
           console.log("Token sudah expired");
-          navigate("/login");
+          return 0;
         }
       } else {
-        navigate("/login");
       }
     };
 
@@ -60,7 +60,7 @@ const Homepages = () => {
         className="h-screen w-screen flex items-center justify-start bg-cover bg-center text-white"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+            `url(https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
         }}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -102,9 +102,6 @@ const Homepages = () => {
       <motion.section
         id="about"
         className="h-screen w-screen flex justify-center bg-cover bg-center text-white text-center flex-row-reverse bg-[#1D1710] overflow-hidden relative"
-        style={{
-          backgroundImage: "url(https://source.unsplash.com/1600x900/?food)",
-        }}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}

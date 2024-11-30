@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { FaHome, FaInfoCircle, FaUtensils, FaTable, FaRegQuestionCircle, FaMapMarkerAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toggleLogin, toggleRegister } from "../redux/slices/LoginOrRegisterSlice";
+import { useDispatch } from "react-redux";
 
 const HomeNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +19,16 @@ const HomeNavbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLoginToggle = () => {
+    dispatch(toggleLogin(true));
+    dispatch(toggleRegister(false));
+  };
+
+  const handleRegisterToggle = () => {
+    dispatch(toggleLogin(false));
+    dispatch(toggleRegister(true));
+  };
 
   return (
     <nav
@@ -51,10 +66,10 @@ const HomeNavbar = () => {
           </li>
         </ul>
         <div className="space-x-2 text-sm">
-          <button className="px-3 py-1 font-Poppins bg-white text-yellow-400 font-semibold rounded hover:bg-gray-100 transition">
+          <button onClick={() => {navigate("/login"); handleLoginToggle();}} className="px-3 py-1 font-Poppins bg-white text-yellow-400 font-semibold rounded hover:bg-gray-100 transition">
             Login
           </button>
-          <button className="px-3 py-1 font-Poppins bg-yellow-500 text-white font-semibold rounded hover:bg-green-800 transition">
+          <button onClick={() => {navigate("/login"); handleRegisterToggle();}} className="px-3 py-1 font-Poppins bg-yellow-500 text-white font-semibold rounded hover:bg-green-800 transition">
             Register
           </button>
         </div>

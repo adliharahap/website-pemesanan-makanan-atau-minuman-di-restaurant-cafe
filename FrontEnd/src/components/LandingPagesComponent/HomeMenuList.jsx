@@ -106,21 +106,21 @@ const HomeMenuList = () => {
       <div className="w-full px-8">
         {!searchTerm ? (
           <>
-            <div className="grid grid-cols-5 pt-12">
+            <div className="grid grid-cols-5 pt-12 gap-y-6">
               {renderMenuSection("Makanan")}
             </div>
-            <div className=" w-full pt-12 text-left px-4">
+            <div className="w-full pt-12 text-left px-4">
                 <h2 className="text-yellow-500 text-3xl font-semibold font-Poppins">
                     Minuman
                 </h2>
             </div>
-            <div className="grid grid-cols-5 pt-12">
+            <div className="grid grid-cols-5 pt-12 gap-y-6">
               {renderMenuSection("Minuman")}
             </div>
           </>
         ) : (
             <>
-                <div className="grid grid-cols-5 pt-12">
+                <div className="grid grid-cols-5 pt-12 gap-y-6">
                 {renderFilteredMenu()}
                 </div>
             </>

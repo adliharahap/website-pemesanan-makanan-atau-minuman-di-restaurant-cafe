@@ -16,7 +16,7 @@ const AdminAddMejaPages = () => {
 
     useEffect(() => {
         // mengarahkan active yang benar ke sidebar
-        dispatch(setActiveItem("Menu"));
+        dispatch(setActiveItem("List Meja"));
         
         const checkLoginOrNot = async () => {
             const token = localStorage.getItem('token');

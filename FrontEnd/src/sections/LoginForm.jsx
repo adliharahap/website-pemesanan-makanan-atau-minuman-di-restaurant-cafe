@@ -17,7 +17,6 @@ const LoginForm = () => {
     const {login, register} = useSelector(state => state.LoginOrRegister);
     
     const dispatch = useDispatch();
-    // https://mir-s3-cdn-cf.behance.net/projects/404/6cdf39156680567.Y3JvcCwxMTgwLDkyMiwxMTAsMA.jpg
 
     const ToggleModal = () => {
         window.scrollTo({top: 0, behavior: 'smooth'});

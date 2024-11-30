@@ -4,7 +4,7 @@ import { FiChevronsDown, FiChevronsUp } from 'react-icons/fi';
 // MenuList Component
   const MenuItem = ({ menu, expandedIndex, toggleDescription }) => {
     return (
-      <div className="w-56 bg-[#27241D] rounded-md shadow-md border-[1.5px] border-[rgb(150,106,55)] overflow-hidden transform transition-all duration-300 hover:scale-105 hover:bg-[#5c3e14ca] cursor-pointer">
+      <div className="w-56 bg-[#27241D] rounded-md shadow-md border-[1.5px] border-[rgb(150,106,55)] overflow-hidden transform transition-all duration-300 hover:scale-105 hover:bg-[#2a2012ca] cursor-pointer">
         <div className="flex flex-col p-4">
           {/* Gambar Menu */}
           <div className="my-1 flex justify-center items-center">
