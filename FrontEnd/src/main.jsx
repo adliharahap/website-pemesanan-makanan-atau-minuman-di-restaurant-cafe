@@ -31,6 +31,7 @@ import UpdateStockMenuPage from './Pages/Chef/UpdateStockMenuPage.jsx';
 import OrderReceiptPDF from './components/Waiters/OrderReceiptPDF.jsx';
 import PaymentCashier from './Pages/Cashier/PaymentCashier.jsx';
 import HistoryOrders from './Pages/HistoryOrders';
+import PaymentReceiptPDF from './components/Cashier/PaymentReceiptPDF.jsx';
 
 const routes = [
   {
@@ -136,6 +137,10 @@ const routes = [
   {
     path: "/pdf-viewer",
     element: <OrderReceiptPDF />,
+  },
+  {
+    path: "/struct-Payment-pdf-viewer",
+    element: <PaymentReceiptPDF />,
   }
 ];
 

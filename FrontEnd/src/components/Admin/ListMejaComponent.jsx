@@ -3,7 +3,15 @@ import { motion } from 'framer-motion';
 import { RiArmchairFill } from 'react-icons/ri';
 import TableImage from '../../assets/website_image/table.png';
 
-const ListMejaComponent = ({noMeja, seats, status, clicked}) => {
+const ListMejaComponent = ({noMeja, seats, status,total_price, clicked}) => {
+
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    }).format(value);
+
   return (
     <motion.div
       className={`w-48 ${status === "available" ? 'bg-gradient-to-br from-green-100 to-green-200 border-green-300' : 'bg-gradient-to-br from-red-100 to-red-200 border-red-300'} shadow-md rounded-lg border cursor-pointer`}
@@ -40,7 +48,7 @@ const ListMejaComponent = ({noMeja, seats, status, clicked}) => {
             className={`font-Poppins text-[12px] font-medium py-2 px-4  ${status === "available" ? ' bg-gradient-to-r from-green-400 to-green-500' : ' bg-gradient-to-r from-red-400 to-red-500'} rounded-lg text-white shadow-sm`}
             transition={{ duration: 0.3 }}
           >
-            Tagihan Terakhir: {status === "available" ? 'Rp 0' : 'Rp 35,000'}
+            Tagihan Terakhir: {formatCurrency(total_price)}
           </motion.p>
         </div>
       </div>

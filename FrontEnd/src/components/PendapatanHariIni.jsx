@@ -60,7 +60,7 @@ const PendapatanHariIni = () => {
     });
 
   const lastDailyData =
-    data.pendapatan_harian[data.pendapatan_harian.length - 1] || {};
+    data.pendapatan_harian?.[data.pendapatan_harian.length - 1] || {};
 
   return (
     <div className="container mx-auto p-8">
@@ -70,13 +70,13 @@ const PendapatanHariIni = () => {
           <h2 className="text-xl font-semibold mb-4">Total Pendapatan Hari Ini</h2>
           <div className="flex items-center flex-col gap-12">
             <div className="text-4xl font-bold text-green-600 mr-4">
-              {lastDailyData.total_pendapatan
+              {lastDailyData?.total_pendapatan
                 ? formatCurrency(lastDailyData.total_pendapatan)
                 : "Rp 0"}
             </div>
             <span className="text-sm text-gray-500">
               (Update terakhir:{" "}
-              {lastDailyData.tanggal ? formatDate(lastDailyData.tanggal) : "-"})
+              {lastDailyData?.tanggal ? formatDate(lastDailyData.tanggal) : "-"})
             </span>
           </div>
         </div>
@@ -86,13 +86,13 @@ const PendapatanHariIni = () => {
           <h2 className="text-xl font-semibold mb-4">Total Pendapatan Bulan Ini</h2>
           <div className="flex items-center flex-col gap-12">
             <div className="text-4xl font-bold text-green-600 mr-4">
-              {data.pendapatan_bulanan.total_pendapatan_bulanan
+              {data.pendapatan_bulanan?.total_pendapatan_bulanan
                 ? formatCurrency(data.pendapatan_bulanan.total_pendapatan_bulanan)
                 : "Rp 0"}
             </div>
             <span className="text-sm text-gray-500">
-              (Bulan: {data.pendapatan_bulanan.bulan || "-"}, Tahun:{" "}
-              {data.pendapatan_bulanan.tahun || "-"})
+              (Bulan: {data.pendapatan_bulanan?.bulan || "-"}, Tahun:{" "}
+              {data.pendapatan_bulanan?.tahun || "-"})
             </span>
           </div>
         </div>
@@ -143,17 +143,17 @@ const PendapatanHariIni = () => {
         </div>
         {/* Chart Pendapatan bulanan */}
         <div className="bg-white border border-gray-300 shadow rounded-lg p-6 md:col-span-2">
-            <h2 className="text-xl font-semibold mb-4">Chart Pendapatan Sebulan</h2>
-            <div className="overflow-x-auto">
-              <PendapatanBulananChart dataPendapatan={data} />
-            </div>
+          <h2 className="text-xl font-semibold mb-4">Chart Pendapatan Sebulan</h2>
+          <div className="overflow-x-auto">
+            <PendapatanBulananChart dataPendapatan={data} />
+          </div>
         </div>
         {/* Chart Pendapatan satu tahun */}
         <div className="bg-white border border-gray-300 shadow rounded-lg p-6 md:col-span-2">
-            <h2 className="text-xl font-semibold mb-4">Chart Pendapatan Satu tahun</h2>
-            <div className="overflow-x-auto">
-              <PendapatanTahunanChart dataPendapatan={data} />
-            </div>
+          <h2 className="text-xl font-semibold mb-4">Chart Pendapatan Satu tahun</h2>
+          <div className="overflow-x-auto">
+            <PendapatanTahunanChart dataPendapatan={data} />
+          </div>
         </div>
       </div>
     </div>

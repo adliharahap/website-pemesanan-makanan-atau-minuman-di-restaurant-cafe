@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MdCheckCircle, MdAttachMoney, MdPayment, MdArrowForward, MdArrowBack, MdDiscount, MdCreditCard, MdAccessTime, MdDateRange } from 'react-icons/md'; // Menambahkan ikon baru
+import { useNavigate } from 'react-router-dom';
 
 const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, change, currentTime, CurrentDate, NoTransaksi, waiterName, NoTabel, MenuDetails, setIsPayment }) => {
+  const [orderItems, setOrderItems] = useState({MenuDetails});
+  const navigate = useNavigate();
 
   // Format IDR
   const formatToIDR = (amount) => {
@@ -17,6 +20,34 @@ const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, 
   const calculateDiscountedTotal = () => {
     return total - (total * discount) / 100;
   };
+
+  const CetakStrukTransaksi = async() => {
+    try {
+      const orderData = {
+        paymentMethod : "cash",
+        total : calculateDiscountedTotal(),
+        discount,
+        paidAmount,
+        change,
+        NoTransaksi,
+        status: "complete",
+        NoTabel,
+      }
+
+      localStorage.setItem('orderData', JSON.stringify(orderData));
+      localStorage.setItem('orderItems', JSON.stringify(orderItems));
+
+      navigate('/struct-Payment-pdf-viewer');
+
+      setTimeout(() => {
+        setIsModal(false);
+        setIsPayment(false);
+      }, 3000);
+      
+    } catch (error) {
+        console.log("error : ", error);   
+    }
+  }
   
 
   return (
@@ -129,7 +160,7 @@ const PaymentSuccesModal = ({ isModal, setIsModal, total, discount, paidAmount, 
               {/* Print Receipt Button */}
               <button
                 className="bg-blue-500 text-white rounded px-6 py-3 w-full mt-5 hover:bg-blue-600 transition-all"
-                onClick={() => handlePaymentTransaktion()}
+                onClick={() => CetakStrukTransaksi()}
               >
                 <MdPayment className="inline-block mr-2 text-xl" />
                 Cetak Struk Pembayaran

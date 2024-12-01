@@ -27,7 +27,9 @@ const AddMejaToDb =async (req, res) => {
 
 const getAlltable = async (req, res) => {
     try {
-        let sql = 'SELECT * FROM tables';
+        let sql = `SELECT t.table_id, t.table_number, t.seats, t.status, IFNULL(o.total_price, 0) AS total_price
+            FROM tables t
+            LEFT JOIN orders o ON t.table_id = o.table_id`;
         db.query(sql, (err, results) => {
             if (err) {
                 console.error('Error saat mengambil data:', err);

@@ -19,6 +19,7 @@ const { handlePaymentTransaksion } = require('../controllers/Cashier/handlePayme
 const { getTransactionHistory } = require('../controllers/getTransaktionHistory');
 const { PesananSaatIni } = require('../controllers/AdminDashboard');
 const { AdminPendapatan } = require('../controllers/AdminPendapatan');
+const { getTableOrdersData } = require('../controllers/getTableOrdersData');
 const router = express.Router();
 
 router.get('/verify-token', verifyToken);
@@ -28,6 +29,7 @@ router.get('/getTransaktionHistory', authenticateToken, getTransactionHistory);
 
 router.post('/registration', postRegistrationUserToDb);
 router.post('/login', postLoginUser); 
+router.post('/Admin/getOrdersDataTable',authenticateToken, getTableOrdersData); 
 
 // router admin
 router.get('/admin/get-all-users', authenticateToken, getAllUsers); //untuk admin nanti jangan lupa tambahkan authenticatetoken

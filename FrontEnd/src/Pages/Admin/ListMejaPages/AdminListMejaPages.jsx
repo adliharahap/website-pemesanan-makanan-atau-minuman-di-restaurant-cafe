@@ -10,11 +10,14 @@ import { setActiveItem } from '../../../redux/slices/sidebarSlice';
 import NavbarAdmin from '../../../components/Admin/NavbarAdmin';
 import ListMejaComponent from '../../../components/Admin/ListMejaComponent';
 import axios from 'axios';
+import OrderModal from '../../../components/Admin/OrderModal';
 
 const AdminListMeja = () => {
     const userData = useSelector((state) => state.userData);
     const [allTable,setAllTable] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
+    const [tableNumber, setTableNumber] = useState(null);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -78,14 +81,22 @@ const AdminListMeja = () => {
         return (
             <Suspense fallback={<div>Loading...</div>}>
                 {filteredTables.map(meja => (
-                    <ListMejaComponent key={meja.table_id} noMeja={meja.table_number} seats={meja.seats} status={meja.status} clicked={() => PilihMeja(meja.table_id, meja.status, meja.table_number)} />
+                    <ListMejaComponent key={meja.table_id} noMeja={meja.table_number} seats={meja.seats} status={meja.status} total_price={meja.total_price} clicked={() => LihatPesananMeja(meja.table_number)} />
                 ))}
             </Suspense>
         );
     };
 
+    const LihatPesananMeja = async (IdMeja) => {
+        setIsOpen(true);
+        setTableNumber(IdMeja)
+    }
+
     return (
         <div className='min-h-screen min-w-full bg-slate-100 relative'>
+            {isOpen && (
+                <OrderModal isOpen={isOpen} closeModal={() => setIsOpen(false)} tableNumber={tableNumber} />
+            )}
             {/* Sidebar */}
             <AnimatePresence>
                 <SidebarAdmin />

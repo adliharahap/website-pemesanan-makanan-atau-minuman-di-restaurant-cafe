@@ -11,7 +11,7 @@ const handlePaymentTransaksion = async (req, res) => {
     const {
       paymentMethod,
       total,
-      discount,
+      discount = 0,
       paidAmount,
       change,
       NoTransaksi,
@@ -26,8 +26,12 @@ const handlePaymentTransaksion = async (req, res) => {
       return res.status(400).json({ message: 'Transaction ID (NoTransaksi) tidak boleh kosong.' });
     }
 
-    if (discount.trim() === '') {
-      return res.status(400).json({ message: 'column discount tidak boleh kosong.' });
+    // Set default value untuk discount jika tidak ada atau nilainya bukan string
+    const formattedDiscount = discount && typeof discount === 'string' ? discount.trim() : '0';
+
+    // Pastikan discount adalah angka
+    if (isNaN(Number(formattedDiscount))) {
+      return res.status(400).json({ message: 'Nilai discount harus berupa angka.' });
     }
 
     const menuDetailsString = JSON.stringify(menuDetails); // Ubah menjadi string agar dapat disimpan di kolom JSON
