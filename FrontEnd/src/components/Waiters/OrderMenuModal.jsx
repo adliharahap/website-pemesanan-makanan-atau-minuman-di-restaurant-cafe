@@ -107,7 +107,7 @@ const OrderMenuModal = ({ menu, onClose}) => {
                 
                 {/* Header */}
                 <div className='flex justify-between items-center border-b pb-2'>
-                    <h2 className='text-2xl font-bold text-gray-800 font-Poppins'>King Coffee</h2>
+                    <h2 className='text-2xl font-bold text-gray-800 font-Poppins'>Café Cerita</h2>
                 </div>
                 
                 {/* Menu Details */}

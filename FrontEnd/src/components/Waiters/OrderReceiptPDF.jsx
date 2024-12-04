@@ -164,7 +164,7 @@ export const OrderReceipt = ({ orderData, orderItems }) => {
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         <Text style={styles.title}>Struk Pesanan</Text>
-        <Text style={styles.restaurantName}>King Coffee</Text>
+        <Text style={styles.restaurantName}>Café Cerita</Text>
       </View>
 
       <View style={styles.orderInfo}>

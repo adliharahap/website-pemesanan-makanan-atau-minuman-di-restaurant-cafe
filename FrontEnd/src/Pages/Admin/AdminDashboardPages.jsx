@@ -70,7 +70,7 @@ const AdminPages = () => {
                         <img className='h-8 w-8' src={LightLogo} alt='company_logo'></img>
                     </div>
                     <div>
-                        <h1 className="font-Playwrite text-[10px] text-green-500">King Cofee</h1>
+                        <h1 className="font-Playwrite text-[10px] text-green-500">Café Cerita</h1>
                     </div>
                 </div>
             </div>

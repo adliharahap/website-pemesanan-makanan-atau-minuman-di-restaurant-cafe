@@ -121,7 +121,7 @@ const WaitersNewOrderPages = () => {
                             <img className='h-8 w-8' src={LightLogo} alt='company_logo' />
                         </div>
                         <div>
-                            <h1 className="font-Playwrite text-[10px] text-green-500">King Coffee</h1>
+                            <h1 className="font-Playwrite text-[10px] text-green-500">Café Cerita</h1>
                         </div>
                     </div>
                 </div>

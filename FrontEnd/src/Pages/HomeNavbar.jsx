@@ -37,7 +37,7 @@ const HomeNavbar = () => {
       } transition-all duration-300`}
     >
       <div className="container mx-auto flex items-center justify-between px-4 py-5">
-        <h1 className="text-lg font-bold font-poppins">King coffe</h1>
+        <h1 className="text-lg font-bold font-poppins">Café Cerita</h1>
         <ul className="flex items-center space-x-4 text-sm">
           <li>
             <a href="#home" className="hover:text-orange-400 flex items-center font-Poppins">

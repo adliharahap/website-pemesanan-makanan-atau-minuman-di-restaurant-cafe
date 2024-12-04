@@ -55,7 +55,7 @@ const LoginForm = () => {
             <div className="flex-1 w-full bg-white z-10">
                 <div className="w-full h-full">
                     <div className="flex justify-center items-center flex-col gap-8 font-bold">
-                        <h1 className="font-Playwrite text-2xl text-green-500">Welcome To King Cofee</h1>
+                        <h1 className="font-Playwrite text-2xl text-green-500">Welcome To Café Cerita</h1>
                         <p className="font-Poppins text-md">{login ? "Login To Your Account" : "Create Your New Account"}</p>
                         <br />
                     </div>

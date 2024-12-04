@@ -52,7 +52,7 @@ export const PaymentReceipt = ({ receiptData, receiptItems }) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.title}>Struk Pembayaran</Text>
-          <Text style={styles.restaurantName}>King Coffee</Text>
+          <Text style={styles.restaurantName}>Café Cerita</Text>
         </View>
 
         <View style={styles.receiptInfo}>

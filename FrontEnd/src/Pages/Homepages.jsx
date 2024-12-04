@@ -69,7 +69,7 @@ const Homepages = () => {
         <div className="bg-[#25211B] bg-opacity-50 p-8 w-[50%] h-screen flex items-center border-r-[1.5px] border-[#25211B] ">
           <div>
             <h2 className="text-2xl sm:text-8xl font-bold mb-6 text-yellow-500 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.8)]">
-              Welcome to King Coffee
+              Welcome to Café Cerita
             </h2>
             <p className="text-base sm:text-lg text-white drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.8)]">
               Indulge in the finest coffee and delicious treats that will take your taste buds on a royal journey.

@@ -7,9 +7,9 @@ import { verifyToken } from '../../utils/checkUserToken';
 import SidebarChef from '../../components/Chef/SidebarChef';
 import NavbarAdmin from '../../components/Admin/NavbarAdmin';
 import { AnimatePresence } from 'framer-motion';
-import MenuManagement from '../../components/Admin/MenuManagement';
 import { IoHome } from 'react-icons/io5';
 import MenuStockManagement from '../../components/Chef/MenuStockManagement';
+import LightLogo from '../../assets/Logo/light_logo-removebg-preview.png';
 
 const UpdateStockMenuPage = () => {
     const userData = useSelector((state) => state.userData);
@@ -63,10 +63,10 @@ const UpdateStockMenuPage = () => {
                 </div>
                 <div className='flex items-center justify-end'>
                     <div>
-                        {/* <img className='h-8 w-8' src={LightLogo} alt='company_logo'></img> */}
+                        <img className='h-8 w-8' src={LightLogo} alt='company_logo'></img>
                     </div>
                     <div>
-                        <h1 className="font-Playwrite text-[10px] text-green-500">King Cofee</h1>
+                        <h1 className="font-Playwrite text-[10px] text-green-500">Café Cerita</h1>
                     </div>
                 </div>
             </div>
